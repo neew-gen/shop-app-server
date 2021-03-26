@@ -2,28 +2,65 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ProductModel {
-  id: String!
-  name: String!
-  img: String
-  price: Int
+type ProductEntity {
+  id: String
+  name: String
+  imgUrl: String
+  price: String
   description: String
-  category: String!
+  category: String
+}
+
+type Category {
+  id: String
+  name: String
+  imgUrl: String
+  isPublic: Boolean
 }
 
 type Query {
-  product(category: String!): [ProductModel!]!
+  products: [ProductEntity!]!
+  product(id: String!): ProductEntity!
+  categories: [Category!]!
+  category(id: String!): Category!
 }
 
 type Mutation {
-  createProduct(product: ProductInput!): ProductModel!
+  createProduct(product: ProductInput!): ProductEntity!
+  updateProduct(product: UpdateProductInput!, id: String!): ProductEntity!
+  deleteProduct(id: String!): ProductEntity!
+  createCategory(category: CategoryInput!): Category!
+  updateCategory(category: UpdateCategoryInput!, id: String!): Category!
 }
 
 input ProductInput {
   id: String!
   name: String!
-  img: String
-  price: Int
-  description: String
+  imgUrl: String!
+  price: String!
+  description: String!
   category: String!
+}
+
+input UpdateProductInput {
+  id: String
+  name: String
+  imgUrl: String
+  price: String
+  description: String
+  category: String
+}
+
+input CategoryInput {
+  id: String!
+  name: String!
+  imgUrl: String!
+  isPublic: Boolean!
+}
+
+input UpdateCategoryInput {
+  id: String
+  name: String
+  imgUrl: String
+  isPublic: Boolean
 }

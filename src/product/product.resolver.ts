@@ -1,34 +1,46 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { ProductService } from './product.service'
-import { ProductModel } from './entity/product.model'
-import { ProductInput } from './entity/create-product.input'
-// import { UpdateProductInput } from './dto/update-product.input'
+import { ProductEntity } from './entities/product.entity'
+import { ProductInput } from './dto/create-product.input'
+import { UpdateProductInput } from './dto/update-product.input'
 
-@Resolver(() => ProductModel)
+@Resolver(() => ProductEntity)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
-  @Query(() => [ProductModel], { name: 'product' })
-  findByCategory(@Args('category') category: string) {
-    return this.productService.findByCategory(category)
+
+  @Query(() => [ProductEntity], { name: 'products' })
+  findAll() {
+    return this.productService.findAll()
   }
-  // @Query(() => Product, { name: 'product' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.productService.findOne(id)
+
+  // @Query(() => [ProductModelGraphql], { name: 'product' })
+  // findByCategory(@Args('category') category: string) {
+  //   return this.productService.findByCategory(category)
   // }
-  @Mutation(() => ProductModel)
+  @Query(() => ProductEntity, { name: 'product' })
+  findOne(@Args('id', { type: () => String }) id: string) {
+    console.log('findOne')
+    return this.productService.findOne(id)
+  }
+
+  @Mutation(() => ProductEntity)
   createProduct(@Args('product') productInput: ProductInput) {
-    console.log(productInput)
+    console.log('create')
     return this.productService.create(productInput)
   }
-  // @Mutation(() => Product)
-  // updateProduct(
-  //   @Args('updateProductInput') updateProductInput: UpdateProductInput,
-  // ) {
-  //   return this.productService.update(updateProductInput.id, updateProductInput)
-  // }
-  //
-  // @Mutation(() => Product)
-  // removeProduct(@Args('id', { type: () => Int }) id: number) {
-  //   return this.productService.remove(id)
-  // }
+
+  @Mutation(() => ProductEntity)
+  updateProduct(
+    @Args('id') id: string,
+    @Args('product') updateProductInput: UpdateProductInput,
+  ) {
+    console.log('update')
+    return this.productService.update(id, updateProductInput)
+  }
+
+  @Mutation(() => ProductEntity)
+  deleteProduct(@Args('id') id: string) {
+    console.log('delete')
+    return this.productService.delete(id)
+  }
 }

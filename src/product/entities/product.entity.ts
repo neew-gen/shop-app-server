@@ -3,28 +3,33 @@ import { Entity, Column, ObjectID, ObjectIdColumn } from 'typeorm'
 
 @ObjectType()
 @Entity('product')
-export class ProductModel {
-  @Field()
+export class ProductEntity {
   @ObjectIdColumn()
+  _id: ObjectID
+
+  @Field({ nullable: true })
+  @Column()
   id: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   name: string
 
   @Field({ nullable: true })
   @Column()
-  img: string
+  imgUrl: string
 
-  @Field((type) => Int, { nullable: true })
+  @Field({ nullable: true })
   @Column()
-  price: number
+  price: string
 
   @Field({ nullable: true })
   @Column()
   description: string
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   category: string
 }
+
+type ID = number | string
