@@ -15,13 +15,11 @@ export class CategoryResolver {
 
   @Query(() => [Category], { name: 'categories' })
   findAll() {
-    console.log('findAll')
     return this.categoryService.findAll()
   }
 
   @Query(() => Category, { name: 'category' })
   findOne(@Args('id', { type: () => String }) id: string) {
-    console.log('findOne')
     return this.categoryService.findOne(id)
   }
 
@@ -30,11 +28,10 @@ export class CategoryResolver {
     @Args('id') id: string,
     @Args('category') updateCategoryInput: UpdateCategoryInput,
   ) {
-    console.log('update')
     return this.categoryService.update(id, updateCategoryInput)
   }
-  // @Mutation(() => Category)
-  // removeCategory(@Args('id', { type: () => Int }) id: number) {
-  //   return this.categoryService.remove(id)
-  // }
+  @Mutation(() => Category)
+  deleteCategory(@Args('id') id: string) {
+    return this.categoryService.delete(id)
+  }
 }

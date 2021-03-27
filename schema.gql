@@ -31,6 +31,7 @@ type Mutation {
   deleteProduct(id: String!): ProductEntity!
   createCategory(category: CategoryInput!): Category!
   updateCategory(category: UpdateCategoryInput!, id: String!): Category!
+  deleteCategory(id: String!): Category!
 }
 
 input ProductInput {

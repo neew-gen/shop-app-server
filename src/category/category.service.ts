@@ -34,7 +34,9 @@ export class CategoryService {
     )
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} category`
-  // }
+  delete(id: string) {
+    return this.categoryRepository.deleteOne({
+      id: id,
+    })
+  }
 }

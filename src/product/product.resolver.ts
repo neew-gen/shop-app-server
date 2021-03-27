@@ -19,13 +19,11 @@ export class ProductResolver {
   // }
   @Query(() => ProductEntity, { name: 'product' })
   findOne(@Args('id', { type: () => String }) id: string) {
-    console.log('findOne')
     return this.productService.findOne(id)
   }
 
   @Mutation(() => ProductEntity)
   createProduct(@Args('product') productInput: ProductInput) {
-    console.log('create')
     return this.productService.create(productInput)
   }
 
@@ -34,13 +32,11 @@ export class ProductResolver {
     @Args('id') id: string,
     @Args('product') updateProductInput: UpdateProductInput,
   ) {
-    console.log('update')
     return this.productService.update(id, updateProductInput)
   }
 
   @Mutation(() => ProductEntity)
   deleteProduct(@Args('id') id: string) {
-    console.log('delete')
     return this.productService.delete(id)
   }
 }
