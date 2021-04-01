@@ -29,7 +29,7 @@ export class ProductEntity {
 
   @Field({ nullable: true })
   @Column()
-  category: string
+  categoryId: string
 }
 
 type ID = number | string

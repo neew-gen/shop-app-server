@@ -11,12 +11,6 @@ export class ProductService {
     @InjectRepository(ProductEntity)
     private productRepository: MongoRepository<ProductEntity>,
   ) {}
-  // findByCategory(category: string): Promise<ProductModelTypeOrm[]> {
-  //   return this.productRepository
-  //     .createQueryBuilder('product')
-  //     .where('product.category = :category', { category })
-  //     .getMany()
-  // }
   create(productInput: ProductInput) {
     return this.productRepository.save(productInput)
   }
@@ -28,7 +22,10 @@ export class ProductService {
   findOne(id: string) {
     return this.productRepository.findOne({ id: id })
   }
-
+  findByCategoryId(categoryId: string) {
+    console.log(categoryId)
+    return this.productRepository.find({ categoryId: categoryId })
+  }
   async update(id: string, updateProductInput: UpdateProductInput) {
     return this.productRepository.updateOne(
       {

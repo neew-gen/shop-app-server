@@ -4,7 +4,7 @@ import { InputType, Field, PartialType } from '@nestjs/graphql'
 @InputType()
 export class UpdateProductInput extends PartialType(ProductInput) {
   @Field({ nullable: true })
-  category: string
+  categoryId: string
 
   @Field({ nullable: true })
   name: string

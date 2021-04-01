@@ -18,5 +18,5 @@ export class ProductInput {
   description: string
 
   @Field()
-  category: string
+  categoryId: string
 }

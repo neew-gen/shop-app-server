@@ -8,7 +8,7 @@ type ProductEntity {
   imgUrl: String
   price: String
   description: String
-  category: String
+  categoryId: String
 }
 
 type Category {
@@ -21,6 +21,7 @@ type Category {
 type Query {
   products: [ProductEntity!]!
   product(id: String!): ProductEntity!
+  productsByCategoryId(categoryId: String!): [ProductEntity!]!
   categories: [Category!]!
   category(id: String!): Category!
 }
@@ -40,7 +41,7 @@ input ProductInput {
   imgUrl: String!
   price: String!
   description: String!
-  category: String!
+  categoryId: String!
 }
 
 input UpdateProductInput {
@@ -49,7 +50,7 @@ input UpdateProductInput {
   imgUrl: String
   price: String
   description: String
-  category: String
+  categoryId: String
 }
 
 input CategoryInput {

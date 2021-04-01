@@ -10,16 +10,18 @@ export class ProductResolver {
 
   @Query(() => [ProductEntity], { name: 'products' })
   findAll() {
+    console.log('findall')
     return this.productService.findAll()
   }
 
-  // @Query(() => [ProductModelGraphql], { name: 'product' })
-  // findByCategory(@Args('category') category: string) {
-  //   return this.productService.findByCategory(category)
-  // }
   @Query(() => ProductEntity, { name: 'product' })
-  findOne(@Args('id', { type: () => String }) id: string) {
+  findOne(@Args('id') id: string) {
     return this.productService.findOne(id)
+  }
+
+  @Query(() => [ProductEntity], { name: 'productsByCategoryId' })
+  findByCategoryId(@Args('categoryId') categoryId: string) {
+    return this.productService.findByCategoryId(categoryId)
   }
 
   @Mutation(() => ProductEntity)
