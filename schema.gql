@@ -18,12 +18,26 @@ type Category {
   isPublic: Boolean
 }
 
+type SwipeData {
+  imgUrl: String
+  title: String
+  text: String
+}
+
+type Swipe {
+  id: String
+  swipeIndex: Int
+  swipeData: SwipeData
+}
+
 type Query {
   products: [ProductEntity!]!
   product(id: String!): ProductEntity!
   productsByCategoryId(categoryId: String!): [ProductEntity!]!
   categories: [Category!]!
   category(id: String!): Category!
+  swipes: [Swipe!]!
+  swipe(id: String!): Swipe!
 }
 
 type Mutation {
@@ -33,6 +47,10 @@ type Mutation {
   createCategory(category: CategoryInput!): Category!
   updateCategory(category: UpdateCategoryInput!, id: String!): Category!
   deleteCategory(id: String!): Category!
+  createSwipe(createSwipeInput: CreateSwipeInput!): Swipe!
+  updateIndex(updateIndexInput: [UpdateIndexInput!]!): Swipe!
+  updateSwipe(updateSwipeInput: UpdateSwipeInput!, id: String!): Swipe!
+  deleteSwipe(id: String!): Swipe!
 }
 
 input ProductInput {
@@ -65,4 +83,26 @@ input UpdateCategoryInput {
   name: String
   imgUrl: String
   isPublic: Boolean
+}
+
+input CreateSwipeInput {
+  id: String!
+  swipeIndex: Int
+  swipeData: InputSwipeData
+}
+
+input InputSwipeData {
+  imgUrl: String
+  title: String
+  text: String
+}
+
+input UpdateIndexInput {
+  id: String!
+  swipeIndex: Int!
+  swipeData: InputSwipeData
+}
+
+input UpdateSwipeInput {
+  swipeData: InputSwipeData
 }

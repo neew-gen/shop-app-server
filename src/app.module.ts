@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CategoryModule } from './category/category.module'
+import { SwipeModule } from './swipe/swipe.module'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { CategoryModule } from './category/category.module'
       autoLoadEntities: true,
     }),
     CategoryModule,
+    SwipeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
