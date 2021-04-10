@@ -10,7 +10,6 @@ export class ProductResolver {
 
   @Query(() => [ProductEntity], { name: 'products' })
   findAll() {
-    console.log('findall')
     return this.productService.findAll()
   }
 

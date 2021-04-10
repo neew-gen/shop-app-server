@@ -7,9 +7,15 @@ import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CategoryModule } from './category/category.module'
 import { SwipeModule } from './swipe/swipe.module'
+import { ServeStaticModule } from '@nestjs/serve-static' // New
+import { join } from 'path' // New
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      // New
+      rootPath: join(__dirname, '..', 'client/dist'), // New
+    }), //
     ProductModule,
     CategoryModule,
     GraphQLModule.forRoot({
@@ -28,7 +34,7 @@ import { SwipeModule } from './swipe/swipe.module'
     CategoryModule,
     SwipeModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  // controllers: [AppController],
+  // providers: [AppService],
 })
 export class AppModule {}

@@ -18,6 +18,11 @@ export class CategoryResolver {
     return this.categoryService.findAll()
   }
 
+  @Query(() => [Category], { name: 'categoriesPublic' })
+  findPublic() {
+    return this.categoryService.findPublic()
+  }
+
   @Query(() => Category, { name: 'category' })
   findOne(@Args('id') id: string) {
     return this.categoryService.findOne(id)

@@ -13,7 +13,11 @@ export class SwipeService {
     private swipeRepository: MongoRepository<Swipe>,
   ) {}
   findAll() {
-    return this.swipeRepository.find()
+    return this.swipeRepository.find({
+      order: {
+        swipeIndex: 'ASC',
+      },
+    })
   }
   findOne(id: string) {
     return this.swipeRepository.findOne({ id: id })

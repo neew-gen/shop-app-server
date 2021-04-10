@@ -35,6 +35,7 @@ type Query {
   product(id: String!): ProductEntity!
   productsByCategoryId(categoryId: String!): [ProductEntity!]!
   categories: [Category!]!
+  categoriesPublic: [Category!]!
   category(id: String!): Category!
   swipes: [Swipe!]!
   swipe(id: String!): Swipe!

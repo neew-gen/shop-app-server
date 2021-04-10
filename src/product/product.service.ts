@@ -23,7 +23,6 @@ export class ProductService {
     return this.productRepository.findOne({ id: id })
   }
   findByCategoryId(categoryId: string) {
-    console.log(categoryId)
     return this.productRepository.find({ categoryId: categoryId })
   }
   async update(id: string, updateProductInput: UpdateProductInput) {

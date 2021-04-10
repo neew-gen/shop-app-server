@@ -19,6 +19,14 @@ export class CategoryService {
     return this.categoryRepository.find()
   }
 
+  findPublic() {
+    return this.categoryRepository.find({
+      where: {
+        isPublic: true,
+      },
+    })
+  }
+
   findOne(id: string) {
     return this.categoryRepository.findOne({ id: id })
   }
