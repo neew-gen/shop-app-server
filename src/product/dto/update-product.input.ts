@@ -1,5 +1,5 @@
 import { ProductInput } from '../dto/create-product.input'
-import { InputType, Field, PartialType } from '@nestjs/graphql'
+import { InputType, Field, PartialType, Int } from '@nestjs/graphql'
 
 @InputType()
 export class UpdateProductInput extends PartialType(ProductInput) {
@@ -12,8 +12,8 @@ export class UpdateProductInput extends PartialType(ProductInput) {
   @Field({ nullable: true })
   imgUrl: string
 
-  @Field({ nullable: true })
-  price: string
+  @Field((type) => Int, { nullable: true })
+  price: number
 
   @Field({ nullable: true })
   description: string
