@@ -19,9 +19,9 @@ export class ProductEntity {
   @Column()
   imgUrl: string
 
-  @Field({ nullable: true })
+  @Field((type) => Int, { nullable: true })
   @Column()
-  price: string
+  price: number
 
   @Field({ nullable: true })
   @Column()

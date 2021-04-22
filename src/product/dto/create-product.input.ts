@@ -11,8 +11,8 @@ export class ProductInput {
   @Field()
   imgUrl: string
 
-  @Field()
-  price: string
+  @Field((type) => Int, { nullable: true })
+  price: number
 
   @Field()
   description: string
