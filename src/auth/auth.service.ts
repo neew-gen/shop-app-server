@@ -18,11 +18,11 @@ export class AuthService {
     refreshToken?: string,
   ): AuthPayload {
     return {
-      user: user,
-      payload: {
-        type: 'bearer',
-        token: accessToken,
-        ...(refreshToken ? { refresh_token: refreshToken } : {}),
+      userId: user._id,
+      userData: {},
+      tokens: {
+        access_token: accessToken,
+        refresh_token: refreshToken,
       },
     }
   }

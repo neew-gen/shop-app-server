@@ -2,5 +2,5 @@ import { IsNotEmpty } from 'class-validator'
 
 export class RefreshRequestDto {
   @IsNotEmpty()
-  readonly refreshToken: string
+  readonly refresh_token: string
 }

@@ -29,14 +29,15 @@ export class UserService {
   public async createUserFromRequest(
     request: RegisterRequestDto,
   ): Promise<UserEntity> {
-    const { username, password } = request
+    const { username, password, name } = request
 
     const existingFromUsername = await this.findForUsername(request.username)
+    console.log(existingFromUsername)
 
     if (existingFromUsername) {
-      throw new UnprocessableEntityException('Username already in use')
+      throw new UnprocessableEntityException('Username already in use.')
     }
-    const user = { username, password }
+    const user = { username, password, data: { name } }
 
     return this.userRepository.save(user)
   }

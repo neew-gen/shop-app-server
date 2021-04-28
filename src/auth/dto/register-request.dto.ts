@@ -6,4 +6,7 @@ export class RegisterRequestDto {
 
   @IsNotEmpty()
   readonly password: string
+
+  @IsNotEmpty()
+  readonly name: string
 }

@@ -6,7 +6,9 @@ import {
   Get,
   UseGuards,
   Req,
+  Res,
 } from '@nestjs/common'
+import { Response } from 'express'
 import { AuthService } from './auth.service'
 import { LoginRequestDto } from './dto/login-request.dto'
 import { UserService } from './user/user.service'
@@ -27,73 +29,54 @@ export class AuthController {
     const { username, password } = body
 
     const user = await this.userService.findByUsername(username)
+    if (!user) {
+      throw new UnauthorizedException('The login is invalid.')
+    }
+
     const valid = user
       ? await this.userService.validateCredentials(user, password)
       : false
-
     if (!valid) {
-      throw new UnauthorizedException('The login is invalid')
+      throw new UnauthorizedException('The password is invalid.')
     }
 
-    const accessToken = await this.tokenService.generateAccessToken(user)
-    const refreshToken = await this.tokenService.generateRefreshToken(user)
+    const access_token = this.tokenService.generateAccessToken(user._id)
+    const refresh_token = await this.tokenService.generateRefreshToken(user._id)
 
-    const payload = this.authService.buildResponsePayload(
-      user,
-      accessToken,
-      refreshToken,
-    )
+    // const data = this.authService.buildResponsePayload(
+    //   user,
+    //   accessToken,
+    //   refreshToken,
+    // )
 
-    return {
-      status: 'success',
-      data: payload,
-    }
+    return { access_token, refresh_token }
   }
   @Post('/refresh')
   public async refresh(@Body() body: RefreshRequestDto) {
-    const {
-      user,
-      token,
-    } = await this.tokenService.createAccessTokenFromRefreshToken(
-      body.refreshToken,
+    const access_token = await this.tokenService.createAccessTokenFromRefreshToken(
+      body.refresh_token,
     )
-
-    const payload = this.authService.buildResponsePayload(user, token)
-
-    return {
-      status: 'success',
-      data: payload,
-    }
+    return { access_token }
   }
 
   @Post('/register')
   public async register(@Body() body: RegisterRequestDto) {
-    console.log(body)
     const user = await this.userService.createUserFromRequest(body)
 
-    const accessToken = await this.tokenService.generateAccessToken(user)
-    const refreshToken = await this.tokenService.generateRefreshToken(user)
-    //
-    const payload = this.authService.buildResponsePayload(
-      user,
-      accessToken,
-      refreshToken,
-    )
+    const access_token = await this.tokenService.generateAccessToken(user._id)
+    const refresh_token = await this.tokenService.generateRefreshToken(user._id)
 
-    return {
-      status: 'success',
-      data: payload,
-    }
+    return { access_token, refresh_token }
   }
 
   @Get('/user')
   @UseGuards(JwtAuthGuard)
-  public async getUser(@Req() request) {
-    const user = request.user
+  public async getUserData(@Req() request) {
+    return request.user.data
+  }
 
-    return {
-      status: 'success',
-      data: user,
-    }
+  @Post('/logout')
+  public async logout(@Body() body: RefreshRequestDto) {
+    return await this.tokenService.logout(body.refresh_token)
   }
 }
