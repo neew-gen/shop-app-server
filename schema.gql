@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Category {
+  id: String
+  name: String
+  imgUrl: String
+  isPublic: Boolean
+}
+
 type ProductEntity {
   id: String
   name: String
@@ -9,13 +16,6 @@ type ProductEntity {
   price: Int
   description: String
   categoryId: String
-}
-
-type Category {
-  id: String
-  name: String
-  imgUrl: String
-  isPublic: Boolean
 }
 
 type SwipeData {

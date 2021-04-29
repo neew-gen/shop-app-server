@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common'
-// import { AppController } from './app.controller'
-// import { AppService } from './app.service'
-import { ProductModule } from './product/product.module'
-import { GraphQLModule } from '@nestjs/graphql'
 import { ConfigModule } from '@nestjs/config'
+import { GraphQLModule } from '@nestjs/graphql'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { CategoryModule } from './category/category.module'
-import { SwipeModule } from './swipe/swipe.module'
-import { ServeStaticModule } from '@nestjs/serve-static' // New
 import { join } from 'path'
+
 import { AuthModule } from './auth/auth.module'
+import { CategoryModule } from './category/category.module'
+import { ProductModule } from './product/product.module'
+import { SwipeModule } from './swipe/swipe.module'
 
 @Module({
   imports: [
@@ -34,6 +33,5 @@ import { AuthModule } from './auth/auth.module'
     SwipeModule,
     AuthModule,
   ],
-  // providers: [AppService],
 })
 export class AppModule {}

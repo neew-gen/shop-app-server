@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { CreateSwipeInput } from './dto/create-swipe.input'
-import { UpdateSwipeInput } from './dto/update-swipe.input'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MongoRepository } from 'typeorm'
-import { Swipe } from './entities/swipe.entity'
+
+import { CreateSwipeInput } from './dto/create-swipe.input'
 import { UpdateIndexInput } from './dto/update-index.input.js'
+import { UpdateSwipeInput } from './dto/update-swipe.input'
+import { Swipe } from './entities/swipe.entity'
 
 @Injectable()
 export class SwipeService {
@@ -19,6 +20,7 @@ export class SwipeService {
       },
     })
   }
+
   findOne(id: string) {
     return this.swipeRepository.findOne({ id: id })
   }
@@ -32,9 +34,9 @@ export class SwipeService {
       const maxIndex = Math.max(...swipesArray.map((s) => s.swipeIndex))
       createSwipeInput.swipeIndex = maxIndex + 1
     }
-    // after that we save a new swipe
     return this.swipeRepository.save(createSwipeInput)
   }
+
   async updateIndex(updateIndexInput: UpdateIndexInput[]) {
     const promises = updateIndexInput.map((item) => {
       return this.swipeRepository.updateOne(
@@ -48,6 +50,7 @@ export class SwipeService {
     })
     return await Promise.all(promises)
   }
+
   update(id: string, updateSwipeInput: UpdateSwipeInput) {
     return this.swipeRepository.updateOne(
       {

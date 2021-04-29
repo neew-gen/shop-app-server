@@ -1,33 +1,36 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
-import { SwipeService } from './swipe.service'
-import { Swipe } from './entities/swipe.entity'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+
 import { CreateSwipeInput } from './dto/create-swipe.input'
-import { UpdateSwipeInput } from './dto/update-swipe.input'
 import { UpdateIndexInput } from './dto/update-index.input.js'
+import { UpdateSwipeInput } from './dto/update-swipe.input'
+import { Swipe } from './entities/swipe.entity'
+import { SwipeService } from './swipe.service'
 
 @Resolver(() => Swipe)
 export class SwipeResolver {
   constructor(private readonly swipeService: SwipeService) {}
 
-  @Mutation(() => Swipe)
-  createSwipe(@Args('createSwipeInput') createSwipeInput: CreateSwipeInput) {
-    return this.swipeService.create(createSwipeInput)
-  }
   @Query(() => [Swipe], { name: 'swipes' })
   findAll() {
     return this.swipeService.findAll()
   }
+
+  @Query(() => Swipe, { name: 'swipe' })
+  findOne(@Args('id') id: string) {
+    return this.swipeService.findOne(id)
+  }
+
+  @Mutation(() => Swipe)
+  createSwipe(@Args('createSwipeInput') createSwipeInput: CreateSwipeInput) {
+    return this.swipeService.create(createSwipeInput)
+  }
+
   @Mutation(() => Swipe)
   updateIndex(
     @Args('updateIndexInput', { type: () => [UpdateIndexInput] })
     updateIndexInput: UpdateIndexInput[],
   ) {
     return this.swipeService.updateIndex(updateIndexInput)
-  }
-
-  @Query(() => Swipe, { name: 'swipe' })
-  findOne(@Args('id') id: string) {
-    return this.swipeService.findOne(id)
   }
 
   @Mutation(() => Swipe)
