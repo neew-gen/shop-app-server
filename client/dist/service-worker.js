@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.4ec715a53a9c49e282087e5b6d934323.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.5889e81948f66c32775565ea110d9928.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 // /* eslint @typescript-eslint/explicit-function-return-type: 0 */
 // import { store } from '@/store'
