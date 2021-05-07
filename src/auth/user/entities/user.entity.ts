@@ -1,4 +1,5 @@
-import { Entity, Column, ObjectID, ObjectIdColumn } from 'typeorm'
+import { Column, Entity, ObjectIdColumn } from 'typeorm'
+
 import { UserDataEntity } from './user-data.entity'
 
 @Entity('user')

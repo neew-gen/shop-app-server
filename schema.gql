@@ -9,13 +9,36 @@ type Category {
   isPublic: Boolean
 }
 
+type ProductDiscountEntity {
+  percentage: Int!
+  endsAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ProductImageEntity {
+  id: String!
+  imgUrl: String!
+}
+
+type ProductDataEntity {
+  name: String!
+  price: Int!
+  images: [ProductImageEntity!]!
+  description: String!
+  discount: ProductDiscountEntity
+}
+
 type ProductEntity {
-  id: String
-  name: String
-  imgUrl: String
-  price: Int
-  description: String
-  categoryId: String
+  _id: String!
+  createdAt: DateTime!
+  categoryId: String!
+  count: Int!
+  show: Boolean!
+  productData: ProductDataEntity!
 }
 
 type SwipeData {
@@ -31,9 +54,6 @@ type Swipe {
 }
 
 type Query {
-  products: [ProductEntity!]!
-  product(id: String!): ProductEntity!
-  productsByCategoryId(categoryId: String!): [ProductEntity!]!
   categories: [Category!]!
   categoriesPublic: [Category!]!
   category(id: String!): Category!
@@ -42,9 +62,7 @@ type Query {
 }
 
 type Mutation {
-  createProduct(product: ProductInput!): ProductEntity!
-  updateProduct(product: UpdateProductInput!, id: String!): ProductEntity!
-  deleteProduct(id: String!): ProductEntity!
+  createProduct(createProduct: CreateProductInput!): ProductEntity!
   createCategory(category: CategoryInput!): Category!
   updateCategory(category: UpdateCategoryInput!, id: String!): Category!
   deleteCategory(id: String!): Category!
@@ -54,22 +72,29 @@ type Mutation {
   deleteSwipe(id: String!): Swipe!
 }
 
-input ProductInput {
-  id: String!
-  name: String!
-  imgUrl: String!
-  price: Int
-  description: String!
+input CreateProductInput {
   categoryId: String!
+  count: Int!
+  show: Boolean!
+  productData: CreateProductDataInput!
 }
 
-input UpdateProductInput {
-  id: String
-  name: String
-  imgUrl: String
-  price: Int
-  description: String
-  categoryId: String
+input CreateProductDataInput {
+  name: String!
+  price: Int!
+  images: [CreateProductImageInput!]!
+  description: String!
+  discount: CreateProductDiscountInput
+}
+
+input CreateProductImageInput {
+  id: String!
+  imgUrl: String!
+}
+
+input CreateProductDiscountInput {
+  percentage: Int!
+  endsAt: DateTime
 }
 
 input CategoryInput {
