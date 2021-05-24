@@ -32,7 +32,6 @@ export class UserService {
     const { username, password, name } = request
 
     const existingFromUsername = await this.findForUsername(request.username)
-    console.log(existingFromUsername)
 
     if (existingFromUsername) {
       throw new UnprocessableEntityException('Username already in use.')
