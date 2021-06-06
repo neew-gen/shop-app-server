@@ -8,7 +8,7 @@ export class CreateProductInput {
   categoryId: string
 
   @Field(() => Int, { nullable: true })
-  count: number
+  amount: number
 
   @Field(() => Boolean, { nullable: true })
   show: boolean

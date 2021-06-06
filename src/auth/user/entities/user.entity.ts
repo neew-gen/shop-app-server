@@ -14,5 +14,8 @@ export class UserEntity {
   password: string
 
   @Column()
+  roles: string[]
+
+  @Column()
   data: UserDataEntity
 }

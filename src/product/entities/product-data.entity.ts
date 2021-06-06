@@ -1,11 +1,12 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, Index } from 'typeorm'
 
 import { ProductDiscount } from './product-discount.entity'
 import { ProductImage } from './product-image.entity'
 
 @ObjectType()
 @Entity()
+@Index('text', ['name', 'description'])
 export class ProductData {
   @Field({ nullable: true })
   @Column()

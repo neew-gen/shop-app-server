@@ -1,6 +1,10 @@
+import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { type } from 'os'
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { Roles } from '../auth/roles/roles.decorator'
+import { Role } from '../auth/roles/roles.enum'
 import { CreateProductInput } from './dto/create-product/create-product.input'
 import { Product } from './entities/product.entity'
 import { ProductService } from './product.service'
@@ -11,9 +15,12 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @Mutation(() => Product)
+  // @UseGuards(JwtAuthGuard)
+  // @Roles(Role.Admin)
   createProduct(@Args('createProduct') input: CreateProductInput) {
     return this.productService.createProduct(input)
   }
+
   @Query(() => [Product], { name: 'productsByOrder' })
   findByOrder(
     @Args('orderBy') orderBy: string,
@@ -21,6 +28,12 @@ export class ProductResolver {
   ) {
     return this.productService.findByOrder(orderBy, orderParam)
   }
+
+  @Query(() => [Product], { name: 'productsBySearch' })
+  findBySearch(@Args('searchString') searchString: string) {
+    return this.productService.findBySearch(searchString)
+  }
+
   @Query(() => [Product], { name: 'productsForCart' })
   findProductsForCart(
     @Args({ name: 'ids', type: () => [String] }) ids: string[],

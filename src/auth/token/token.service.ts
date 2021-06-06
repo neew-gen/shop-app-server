@@ -1,10 +1,11 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
-import { UserEntity } from '../user/entities/user.entity'
 import { JwtService, JwtSignOptions } from '@nestjs/jwt'
-import { RefreshTokenService } from '../refresh-token/refresh-token.service'
-import { RefreshTokenEntity } from '../refresh-token/entities/refresh-token.entity'
-import { RefreshTokenPayload } from '../dto/refresh-payload.dto'
 import { TokenExpiredError } from 'jsonwebtoken'
+
+import { RefreshTokenPayload } from '../dto/refresh-payload.dto'
+import { RefreshTokenEntity } from '../refresh-token/entities/refresh-token.entity'
+import { RefreshTokenService } from '../refresh-token/refresh-token.service'
+import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 
 @Injectable()

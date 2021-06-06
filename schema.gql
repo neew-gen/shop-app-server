@@ -57,6 +57,7 @@ type Swipe {
 
 type Query {
   productsByOrder(orderParam: String!, orderBy: String!): [Product!]!
+  productsBySearch(searchString: String!): [Product!]!
   productsForCart(ids: [String!]!): [Product!]!
   productsByCategoryId(sortParam: String!, sortBy: String!, categoryId: String!): [Product!]!
   product(_id: String!): Product!
@@ -80,7 +81,7 @@ type Mutation {
 
 input CreateProductInput {
   categoryId: String
-  count: Int
+  amount: Int
   show: Boolean
   productData: CreateProductData
 }

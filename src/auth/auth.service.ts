@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { UserService } from './user/user.service'
 import { JwtService, JwtSignOptions } from '@nestjs/jwt'
-import { UserEntity } from './user/entities/user.entity'
+
 import { AuthPayload } from './dto/auth-payload.dto'
+import { UserEntity } from './user/entities/user.entity'
+import { UserService } from './user/user.service'
 // import { RefreshTokenService } from '../refresh-token/refresh-token.service'
 
 @Injectable()

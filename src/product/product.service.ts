@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { ObjectID } from 'mongodb'
-import { MongoRepository } from 'typeorm'
+import { Like, MongoRepository } from 'typeorm'
 
 import { CreateProductInput } from './dto/create-product/create-product.input'
 // import { UpdateProductInput } from './dto/update-product.input'
 import { Product } from './entities/product.entity'
+import { ProductData } from './entities/product-data.entity'
 
 @Injectable()
 export class ProductService {
@@ -32,6 +33,30 @@ export class ProductService {
         show: true,
       },
       order: orderObj,
+    })
+  }
+  async findBySearch(searchString) {
+    // this.productMongoRepository
+    //   .createCollectionIndex({
+    //     'productData.name': 'text',
+    //     'productData.description': 'text',
+    //   })
+    //   .then((res) => console.log(res))
+    return this.productMongoRepository.find({
+      where: {
+        $or: [
+          {
+            'productData.name': { $regex: '^' + searchString },
+          },
+          {
+            'productData.description': { $regex: '^' + searchString },
+          },
+        ],
+      },
+      // order: {
+      //   score: 'ASC', // Sort by score in ASC order
+      // },
+      take: 5,
     })
   }
 

@@ -1,10 +1,15 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common'
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { MongoRepository } from 'typeorm'
-import { UserEntity } from './entities/user.entity'
 // import * as bcrypt from 'bcrypt';
 import { ObjectID } from 'mongodb'
+import { MongoRepository } from 'typeorm'
+
 import { RegisterRequestDto } from '../dto/register-request.dto'
+import { UserEntity } from './entities/user.entity'
 
 @Injectable()
 export class UserService {
@@ -21,8 +26,18 @@ export class UserService {
   public async validateCredentials(
     user: UserEntity,
     password: string,
-  ): Promise<boolean> {
-    return password === user.password
+    roles: string[],
+  ): Promise<void> {
+    const isValidPassword = (): boolean => password === user.password
+    if (!isValidPassword)
+      throw new UnauthorizedException('The password is invalid.')
+    const userRoles = user.roles
+    if (!userRoles) throw new UnauthorizedException('You do not have access.')
+    let hasRoles = false
+    for (const role of roles) {
+      if (userRoles.includes(role)) hasRoles = true
+    }
+    if (!hasRoles) throw new UnauthorizedException('You do not have access.')
     // return await compare(password, user.password)
   }
 
