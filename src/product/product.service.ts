@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { orderBy } from 'lodash'
 import { ObjectID } from 'mongodb'
-import { Like, MongoRepository } from 'typeorm'
+import { MongoRepository } from 'typeorm'
 
 import { CreateProductInput } from './dto/create-product/create-product.input'
 // import { UpdateProductInput } from './dto/update-product.input'
@@ -25,9 +26,18 @@ export class ProductService {
     }
     return this.productMongoRepository.save(product)
   }
-  findByOrder(orderBy, orderParam) {
+  async findByOrder(orderBy, orderParam) {
     const orderObj = {}
     orderObj[orderBy] = orderParam
+    if (orderBy === 'productData.discount.percentage') {
+      return this.productMongoRepository.find({
+        where: {
+          show: true,
+          'productData.discount.percentage': { $exists: true },
+        },
+        order: orderObj,
+      })
+    }
     return this.productMongoRepository.find({
       where: {
         show: true,
@@ -70,9 +80,51 @@ export class ProductService {
   // findAll() {
   //   return this.productRepository.find()
   // }
-  findByCategoryId(categoryId, sortBy, sortParam) {
+  async findByCategoryId(categoryId, sortBy, sortParam) {
     const orderObj = {}
     orderObj[sortBy] = sortParam
+    if (sortBy === 'productData.price') {
+      const res = await this.productMongoRepository.find({
+        where: {
+          show: true,
+          categoryId,
+        },
+        order: orderObj,
+      })
+      return ProductService.sortByPriceWithDiscount(res, sortParam)
+    }
+    // const res = await this.productMongoRepository
+    //   .aggregate([
+    //     {
+    //       $set: {
+    //         'productData.price': {
+    //           $cond: {
+    //             if: { 'productData.discount': { $ne: null } },
+    //             then: 'productData.price',
+    //             else: {
+    //               $multiply: [
+    //                 { $divide: ['productData.price', 100] },
+    //                 { $subtract: [100, 'productData.discount.percentage'] },
+    //               ],
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //     // {
+    //     //   $match: {
+    //     //     show: true,
+    //     //     categoryId,
+    //     //   },
+    //     // },
+    //     // {
+    //     //   $sort: {
+    //     //     sortBy: 1,
+    //     //   },
+    //     // },
+    //   ])
+    //   .toArray()
+    // console.log(res)
     return this.productMongoRepository.find({
       where: {
         show: true,
@@ -101,4 +153,29 @@ export class ProductService {
   //     id: id,
   //   })
   // }
+  private static sortByPriceWithDiscount(res, order): Product[] {
+    // Because mongo can't work with dots in aggregate!!! I had to write this. Why I can't use dots notation, I don't understand...
+    // TODO i think need to improve this...
+    const idsWithCalculatedPrices = res.map((product) => {
+      const { _id, productData } = product
+      if (!productData.discount)
+        return {
+          _id,
+          calculatedPrice: productData.price,
+        }
+      const calculatedPrice =
+        (productData.price / 100) * (100 - productData.discount.percentage)
+      return {
+        _id,
+        calculatedPrice,
+      }
+    })
+    const sortedByCalculatedPrice = orderBy<{
+      _id: string
+      calculatedPrice: number
+    }>(idsWithCalculatedPrices, ['calculatedPrice'], [order.toLowerCase()])
+    return sortedByCalculatedPrice.map(
+      (sortObj) => res.filter((resObj) => resObj._id === sortObj._id)[0],
+    )
+  }
 }
