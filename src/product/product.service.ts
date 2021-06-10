@@ -29,15 +29,15 @@ export class ProductService {
   async findByOrder(orderBy, orderParam) {
     const orderObj = {}
     orderObj[orderBy] = orderParam
-    if (orderBy === 'productData.discount.percentage') {
-      return this.productMongoRepository.find({
-        where: {
-          show: true,
-          'productData.discount.percentage': { $exists: true },
-        },
-        order: orderObj,
-      })
-    }
+    // if (orderBy === 'productData.discount.percentage') {
+    //   return this.productMongoRepository.find({
+    //     where: {
+    //       show: true,
+    //       'productData.discount.percentage': { $exists: true },
+    //     },
+    //     order: orderObj,
+    //   })
+    // }
     return this.productMongoRepository.find({
       where: {
         show: true,
